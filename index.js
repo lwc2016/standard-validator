@@ -11,62 +11,60 @@
     };
     Validator.prototype.strategy = {
         // 验证必填
-        required: function(field, errorMsg){
+        required: function(field, message){
             let value = this.form[field];
             if(value === '' || value === undefined){
-                this.addError(field, errorMsg || field + "值必须填写");
+                this.addError(field, message || field + "值必须填写");
             }
         },
         // 最小长度
-        minLength: function(field, errorMsg, length){
+        minLength: function(field, message, length){
             let value = this.form[field] || '';
             if(value && value.length < length){
-                this.addError(field, errorMsg || field + "长度不能小于" + length);
+                this.addError(field, message || field + "长度不能小于" + length);
             }
         },
         // 最大长度
-        maxLength: function(field, errorMsg, length){
+        maxLength: function(field, message, length){
             let value = this.form[field] || '';
             if(value && value.length > length){
-                this.addError(field, errorMsg || field + "长度不能超过" + length);
+                this.addError(field, message || field + "长度不能超过" + length);
             }
         },
         // 校验手机号
-        phone: function(field, errorMsg){
+        phone: function(field, message){
             if(this.form[field] && !/1[3|5|7|8][0-9]{9}$/.test(this.form[field])){
-                this.addError(field, errorMsg || "手机号不合法！");
+                this.addError(field, message || "手机号不合法！");
             }
         },
         // 校验正整数
-        digit: function(field, errorMsg){
+        digit: function(field, message){
             if(!/^[0-9]*[1-9][0-9]*$/.test(this.form[field])){
-                this.addError(field, errorMsg || "填写正整数");
+                this.addError(field, message || "填写正整数");
             }
         },
         // 最小值
-        min: function(field, errorMsg, value){
+        min: function(field, message, value){
             if(this.form[field] && this.form[field] < value){
-                this.addError(field, errorMsg || "最小值不能小于" + value);
+                this.addError(field, message || "最小值不能小于" + value);
                 return false;
             }
             return true;
         },
         // 最大值
-        max: function(field, errorMsg, value){
+        max: function(field, message, value){
             if(this.form[field] && this.form[field] > value){
-                this.addError(field, errorMsg || "最大值不能大于" + value);
+                this.addError(field, message || "最大值不能大于" + value);
                 return false;
             }
             return true;
         }
     };
     // 添加错误
-    Validator.prototype.addError = function(field, errorMsg){
+    Validator.prototype.addError = function(field, message){
         this.valid = false;
-        if(this.errors[field]){
-            this.errors[field].push(errorMsg);
-        }else{
-            this.errors[field] = [errorMsg];
+        if(!this.errors[field]){
+            this.errors[field] = message;
         }
     };
     Validator.prototype.validate_on_submit = function(){
@@ -83,7 +81,7 @@
                 // 获取校验规则的值
                 let value = option[strategy];
                 if(!strategy) throw new Error("请选择正确的校验规则");
-                return this.strategy[strategy].bind(this)(item, option.errorMsg, value);
+                return this.strategy[strategy].bind(this)(item, option.message, value);
             })
         });
         return this.valid;
