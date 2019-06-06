@@ -9,10 +9,10 @@ describe("validator", function(){
                 {required: true, message: "用户名必须填写！"}
             ]
         });
-        var valid = validator.validate_on_submit();
-        assert.equal(valid, false);
-        assert.deepEqual(validator.errors, {"username": "用户名必须填写！"});
-        done();
+        validator.validate(error=>{
+            assert.deepEqual(error, {"username": "用户名必须填写！"});
+            done();
+        });
     });
 
     it("测试minLength是否正确", function(done){
@@ -22,10 +22,10 @@ describe("validator", function(){
                 {maxLength: 10, message: "密码不能超过8位！"}
             ]
         });
-        let valid = validator.validate_on_submit();
-        assert.equal(valid, false);
-        assert.deepEqual(validator.errors, {"password": "密码不能少于6位！"});
-        done();
+        validator.validate(err=>{
+            assert.deepEqual(validator.errors, {"password": "密码不能少于6位！"});
+            done();
+        });
     });
 
     it("测试maxLength是否正确", function(done){
@@ -35,9 +35,11 @@ describe("validator", function(){
                {maxLength: 10, message: "密码不能超过8位！"}
            ]
        });
-       assert.equal(validator.validate_on_submit(), false);
-       assert.deepEqual(validator.errors, {"password": "密码不能超过8位！"});
-       done();
+       validator.validate(error=>{
+           assert.deepEqual(error, {"password": "密码不能超过8位！"});
+           done();
+       })
+
     });
 
     it("测试phone是否正确", function(done){
@@ -46,16 +48,20 @@ describe("validator", function(){
                 {phone: true, message: "手机号不合法"}
             ]
         });
-        assert.equal(validator.validate_on_submit(), true);
+        validator.validate((err)=>{
+            assert.equal(err, null);
+        });
+
 
         var validator2 = new Validator({phone: "1303710932"}, {
             phone: [
                 {phone: true, message: "手机号不合法"}
             ]
         });
-        assert.equal(validator2.validate_on_submit(), false);
-        assert.deepEqual(validator2.errors, {phone: "手机号不合法"});
-        done();
+        validator2.validate(err=>{
+            assert.deepEqual(err, {phone: "手机号不合法"});
+            done();
+        });
     })
 
     it("测试digit是否正确", function(done){
@@ -64,22 +70,30 @@ describe("validator", function(){
                {digit: true, message: "请填写正整数"}
            ]
        });
-       assert.equal(validator.validate_on_submit(), false);
+       validator.validate(err=>{
+           assert.deepEqual(err, {age: "请填写正整数"});
+       });
+
 
        var validator2 = new Validator({age: 1}, {
             age: [
                 {digit: true, message: "请填写正整数"}
             ]
        });
-       assert.equal(validator2.validate_on_submit(), true);
+       validator2.validate(err=>{
+           assert.equal(err, null);
+       });
+
 
        var validator3 = new Validator({age: -1}, {
            age: [
                {digit: true, message: "请填写正整数"}
            ]
        });
-       assert.equal(validator3.validate_on_submit(), false);
-       done();
+       validator3.validate(err=>{
+           assert.deepEqual(err, {age: "请填写正整数"});
+           done();
+       });
     });
 
     it("测试min是否正确", function(done){
@@ -88,33 +102,42 @@ describe("validator", function(){
                 {min: 12, message: "不能小于12岁"}
             ]
         });
-        assert.equal(validator.validate_on_submit(), false);
+        validator.validate(err=>{
+            assert.deepEqual(err, {age: "不能小于12岁"});
+        });
+
 
         var validator2 = new Validator({age: 12}, {
             age: [
                 {min: 12, message: "不能小于12岁"}
             ]
         });
-        assert.equal(validator2.validate_on_submit(), true);
+        validator2.validate(err=>{
+            assert.equal(err, null);
+        });
 
         var validator3 = new Validator({age: 13}, {
             age: [
                 {min: 12, message: "不能小于12岁"}
             ]
         });
-        assert.equal(validator3.validate_on_submit(), true);
-        done();
+        validator3.validate(error=>{
+            assert.equal(error, null);
+            done();
+        });
     });
 
     it("测试max是否正确", function(done){
-        var validator = new Validator({age: 8}, {
+        var validator = new Validator({age: 28}, {
             age: [
-                {min: 18, message: "不能大于18岁"}
+                {max: 18, message: "不能大于18岁"}
             ]
         });
-        assert.equal(validator.validate_on_submit(), false);
-        done();
-    })
+        validator.validate(err=>{
+            assert.deepEqual(err, {age: "不能大于18岁"});
+            done();
+        });
+    });
 
     it("综合测试1", function(done){
         var validator = new Validator({
@@ -140,14 +163,15 @@ describe("validator", function(){
                 {max: 18, message: "不能大于18岁"}
             ]
         });
-        assert.equal(validator.validate_on_submit(), false);
-        assert.deepEqual(validator.errors, {
-            username: "请填写用户名！",
-            password: "密码不能少于6位！",
-            phone: "请填写合法手机号！",
-            age: "不能小于13岁"
+        validator.validate(error=>{
+            assert.deepEqual(error, {
+                username: "请填写用户名！",
+                password: "密码不能少于6位！",
+                phone: "请填写合法手机号！",
+                age: "不能小于13岁"
+            });
+            done();
         });
-        done();
     });
 
     it("综合测试2", function(done){
@@ -166,13 +190,12 @@ describe("validator", function(){
             ],
             age: [
                 {min: 13, message: "不能小于13岁"},
-                {max: 18, message: "不能大于18岁"}
+                {max: 17, message: "不能大于18岁"}
             ]
         });
-        assert.equal(validator.validate_on_submit(), false);
-        assert.deepEqual(validator.errors, {
-            username: "请填写用户名！"
+        validator.validate((error)=>{
+            assert.deepEqual(error, {username: "请填写用户名！"});
+            done();
         });
-        done();
     })
 });

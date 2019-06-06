@@ -21,11 +21,11 @@ let rules = {
 };
 let validator = new StandardValidator(data, rules);
 
-// 调用validate_on_submit方法进行校验，返回值true表示校验通过，返回值false，表示校验失败
-validator.validate_on_submit();
-
-// error属性存放错误信息
-console.log(validator.error);
+// 调用validate方法进行校验，返回值true表示校验通过，返回值false，表示校验失败
+validator.validate(err=>{
+    // err 为null 校验通过
+    // err 不为null 校验不通过
+})
 ```
 
 #### 现有的校验规则

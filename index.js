@@ -45,7 +45,7 @@
         },
         // 最小值
         min: function(field, message, value){
-            if(this.form[field] && this.form[field] < value){
+            if(this.form[field] && (this.form[field] < value)){
                 this.addError(field, message || "最小值不能小于" + value);
                 return false;
             }
@@ -53,7 +53,7 @@
         },
         // 最大值
         max: function(field, message, value){
-            if(this.form[field] && this.form[field] > value){
+            if(this.form[field] && (this.form[field] > value)){
                 this.addError(field, message || "最大值不能大于" + value);
                 return false;
             }
@@ -67,7 +67,7 @@
             this.errors[field] = message;
         }
     };
-    Validator.prototype.validate_on_submit = function(){
+    Validator.prototype.validate = function(callback){
         // 将errors置空
         this.errors = {};
         // 获取需要校验字段组成的数组
@@ -84,7 +84,7 @@
                 return this.strategy[strategy].bind(this)(item, option.message, value);
             })
         });
-        return this.valid;
+        callback(this.valid ? null: this.errors);
     };
     // 导出模块
     module.exports = Validator;
