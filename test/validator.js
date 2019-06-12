@@ -23,7 +23,7 @@ describe("validator", function(){
             ]
         });
         validator.validate(err=>{
-            assert.deepEqual(validator.errors, {"password": "密码不能少于6位！"});
+            assert.deepEqual(err, {"password": "密码不能少于6位！"});
             done();
         });
     });
