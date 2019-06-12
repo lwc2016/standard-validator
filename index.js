@@ -10,8 +10,12 @@ const strategies = require("./libs/strategies.js");
     };
     // 校验策略
     Validator.prototype.strategies = {...strategies};
-    // 校验
+    // 异步校验
     Validator.prototype.validate = function(callback){
+        callback(this.validateSync());
+    };
+    // 同步校验
+    Validator.prototype.validateSync = function(){
         // 获取需要校验字段组成的数组
         let errors = {};
         let valid = true;
@@ -37,7 +41,7 @@ const strategies = require("./libs/strategies.js");
                 });
             })
         });
-        callback(valid ? null: errors);
+        return valid ? null: errors;
     };
     // 导出模块
     module.exports = Validator;
