@@ -39,7 +39,27 @@ describe("validator", function(){
            assert.deepEqual(error, {"password": "密码不能超过8位！"});
            done();
        })
+    });
 
+    it("测试equal是否正确", function(done){
+        var validator = new Validator({password: "123456", confirmPassword: "123"}, {
+            confirmPassword: [
+                {equal: "password", message: "两次输入密码不一致！"}
+            ]
+        });
+        validator.validate(err=>{
+            assert.deepEqual(err, {confirmPassword: "两次输入密码不一致！"});
+        });
+
+        var validator2 = new Validator({password: "123456", confirmPassword: "123456"}, {
+            confirmPassword: [
+                {equal: "password", message: "两次输入密码不一致！"}
+            ]
+        });
+        validator2.validate(err=>{
+            assert.equal(err, null);
+            done();
+        });
     });
 
     it("测试phone是否正确", function(done){

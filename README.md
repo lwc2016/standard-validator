@@ -37,3 +37,4 @@ validator.validate(err=>{
 | digit | 正整数 |
 | min  | 最小值 |
 | max  | 最大值 |
+| equal | 等于指定字段的值 |

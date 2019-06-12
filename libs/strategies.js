@@ -54,5 +54,13 @@ module.exports = {
         }else{
             callback();
         }
+    },
+    // 等于指定字段
+    equal: function(rule, value, callback){
+        if(value && value !== rule.form[rule.expected]){
+            callback(`${rule.field} needs to be equal ${rule.expected}`);
+        }else{
+            callback();
+        };
     }
 };

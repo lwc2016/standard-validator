@@ -23,7 +23,7 @@ const strategies = require("./libs/strategies.js");
                 // 获取字段的值
                 let value = this.form[item];
                 // 获取校验规则
-                let rule = {field: item, expected: option[strategy]};
+                let rule = {field: item, expected: option[strategy], form: this.form};
                 if(!strategy) throw new Error("请选择正确的校验规则");
                 this.strategies[strategy](rule, value, (errorMsg)=>{
                     if(errorMsg){
