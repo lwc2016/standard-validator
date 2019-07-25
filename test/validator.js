@@ -218,4 +218,39 @@ describe("validator", function(){
             done();
         });
     })
+
+    // 自定义校验规则
+    it("自定义校验规则1", function(done){
+        const validateAge = (value) =>{
+            return value >= 18;
+        };
+        var validator = new Validator({
+            age: 12
+        }, {
+            age: [
+                {validator: validateAge, message: "年龄不能小于18岁"}
+            ]
+        });
+        validator.validate((error)=>{
+            assert.deepEqual(error, {age: "年龄不能小于18岁"});
+            done();
+        });
+    });
+
+    it("自定义校验规则2", function(done){
+        const validateAge = (value) =>{
+            return value >= 18;
+        };
+        var validator = new Validator({
+            age: 20
+        }, {
+            age: [
+                {validator: validateAge, message: "年龄不能小于18岁"}
+            ]
+        });
+        validator.validate((error)=>{
+            assert.equal(error, null);
+            done();
+        });
+    });
 });

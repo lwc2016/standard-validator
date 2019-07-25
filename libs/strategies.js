@@ -62,5 +62,13 @@ module.exports = {
         }else{
             callback();
         };
+    },
+    // 自定义校验规则
+    validator: function(rule, value, callback){
+        if(value && !rule.expected(value)){
+            callback(`${rule.filed} is valid`);
+        }else{
+            callback();
+        }
     }
 };
