@@ -38,3 +38,4 @@ validator.validate(err=>{
 | min  | 最小值 |
 | max  | 最大值 |
 | equal | 等于指定字段的值 |
+| validator | 自定义校验规则 |
