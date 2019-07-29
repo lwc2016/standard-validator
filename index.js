@@ -23,7 +23,7 @@ const strategies = require("./libs/strategies.js");
             // item: 校验字段
             this.rules[item].map(option=>{
                 // 获取校验规则
-                let strategy = Object.keys(this.strategies).find(i => option[i]);
+                let strategy = Object.keys(this.strategies).find(i => option[i] !== undefined);
                 // 获取字段的值
                 let value = this.form[item];
                 // 获取校验规则

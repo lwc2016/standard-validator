@@ -179,7 +179,7 @@ describe("validator", function(){
                 {phone: true, message: "请填写合法手机号！"}
             ],
             age: [
-                {min: 13, message: "不能小于13岁"},
+                {min: 0, message: "不能小于13岁"},
                 {max: 18, message: "不能大于18岁"}
             ]
         });
@@ -187,8 +187,7 @@ describe("validator", function(){
             assert.deepEqual(error, {
                 username: "请填写用户名！",
                 password: "密码不能少于6位！",
-                phone: "请填写合法手机号！",
-                age: "不能小于13岁"
+                phone: "请填写合法手机号！"
             });
             done();
         });
@@ -202,14 +201,14 @@ describe("validator", function(){
                 {required: true, message: "请填写用户名！"}
             ],
             password: [
-                {minLength: 6, message: "密码不能少于6位！"},
+                {minLength: 0, message: "密码不能少于6位！"},
                 {maxLength: 10, message: "密码不能超过10位！"}
             ],
             phone: [
                 {phone: true, message: "请填写合法手机号！"}
             ],
             age: [
-                {min: 13, message: "不能小于13岁"},
+                {min: 0, message: "不能小于13岁"},
                 {max: 17, message: "不能大于18岁"}
             ]
         });
